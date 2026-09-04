@@ -1,0 +1,77 @@
+**********PID Controller with Plant in closed loop
+.param val=100
+.lib ad844.lib
+x1 1 2 40 41 3 4 ad844
+******Integrator
+x2 3 5 40 41 6 7 ad844
+******Differentiator
+x3 3 8 40 41 9 10 ad844
+******Proportional
+x4 3 11 40 41 12 13 ad844
+*****LPF1******
+x5 12 14 40 41 15 16 ad844
+*****LPF2*****
+x6 15 17 40 41 18 19 ad844
+******2nd order*****
+x7 20 21 40 41 22 23 ad844
+x8 0 24 40 41 25 20 ad844
+*****Amplifier***
+xa 25 26 40 41 27 28 ad844
+*****multiplier capacitor***
+xc1 29 7 40 41 30 31 ad844
+xc2 30 31 40 41 30 32 ad844
+******Substractor*****
+R6 2 27 10K
+R7 4 0 10K
+******************
+*******CONTROLLER******
+*****INTEGRATOR****
+R8 5 0 2.5k
+*********multiplier capacitor********
+C5 32 0 10u
+RC1 29 30 100k
+RC2 29 0 1k
+*C5 7 0 5m
+*****DIFFERENTIATOR***
+R9 10 6 20k
+C6 8 0 2.2u
+****PROPORTIONAL*****
+R10 13 9 3k
+R11 11 0 32.5k
+*********************************
+***********PLANT************
+********FIRST-ORDER LPF1****
+R4 14 0 8.507K
+R41 16 0 57k
+C3 16 0 940n
+**********LPF2***********
+R5 17 0 178.38k
+R51 19 0 660k
+C4 19 0 940n
+*****************************
+*****Attenuator*******
+*Rx 26 0 27k
+*Rw 28 0 5k
+****SO*******
+R1 20 0 241.718k
+C1 20 0 940n
+R2 18 21 309k
+C2 23 0 940n
+R3 22 24 309k
+***************************
+*****Amplifier
+rx 28 0 1.56k
+ry 26 0 1k
+******SUPPLY******
+VDD 40 0 DC 10
+VSS 0 41 DC 10
+***************************
+*****INPUT*********
+VIN 1 0 PULSE (0 1 1N 1N 1n 40 80)
+***********************
+***********ANALYSIS*******
+*.step param val .7k 2k .5k
+.tran 0 40 0 0.01 UIC
+.op
+.probe
+.end
